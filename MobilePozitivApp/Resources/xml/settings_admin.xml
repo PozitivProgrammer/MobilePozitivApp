@@ -9,7 +9,7 @@
     <EditTextPreference
           android:key="DebugServerURL"
           android:title="Адрес debug сервера" 
-          android:defaultValue="http://1c.pozitivtelecom.ru/TestMihail/ws/app.1cws" />
+          android:defaultValue="http://1c.pozitivtelecom.ru/SkladPozitiv/ws/app.1cws" />
     <EditTextPreference
           android:key="UpdateURL"
           android:title="Адрес Update сервера"

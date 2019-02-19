@@ -17,6 +17,8 @@ using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace MobilePozitivApp
 {
+
+    
     [Activity(Label = "ActivityElementsList", Theme = "@style/MyTheme", ConfigurationChanges = Android.Content.PM.ConfigChanges.Orientation | Android.Content.PM.ConfigChanges.ScreenSize)]
     public class ActivityDataView : AppCompatActivity
     {
@@ -145,6 +147,8 @@ namespace MobilePozitivApp
 
         private void ParseData(string JSONString)
         {
+            
+
             JObject jsonResult = JObject.Parse(JSONString);
 
             //Добавляем таблицу в интерфейс
@@ -203,7 +207,8 @@ namespace MobilePozitivApp
                         }
                         else
                         {
-                            Button nButton = new Button(this) { Id = (int)Id };
+                            Button nButton = new Android.Support.V7.Widget.AppCompatButton(this) { Id = (int)Id };                                                  
+
                             nButton.Text = Description;
                             nButton.Click += (sender, args) =>
                             {
@@ -212,7 +217,9 @@ namespace MobilePozitivApp
                                 SetDataByRef(Name, buttonValue);
                             };
                             mLinearLayout.AddView(nButton);
-                        }                        
+                            
+                            
+                        }
                         break;
                     case "textview":
                         TextView nTextView = new TextView(this) { Id = (int)Id };
@@ -409,7 +416,8 @@ namespace MobilePozitivApp
                             mElementsDropMenu.Add(menuItemId, DataMenuItem);
                             menuItemId++;
 
-                            if (DataListValue == DataMenuItem) nTextDataList.Text = PresentMenuItem;
+                            if (DataListValue == DataMenuItem)
+                                nTextDataList.Text = PresentMenuItem;
                         }
 
                         DataListMenu.MenuItemClick += (psender, pargs) =>

@@ -154,6 +154,7 @@ namespace MobilePozitivApp
                 mUpdateApp.Update();
                 mButtonUpdate.Enabled = false;
             };
+            
         }
 
         void mButtonLogin_Click(object sender, EventArgs e)
@@ -216,7 +217,7 @@ namespace MobilePozitivApp
                 clearPreferences();
                 var mAlert = new AlertDialog.Builder(this)
                     .SetTitle("Ошибка авторизации.")
-                    .SetMessage("Данные не верны или сервер не доступен.")
+                    .SetMessage("Данные не верны или сервер не доступен. "+ e.Error.Message)
                     .SetCancelable(true)
                     .Show();
                 Toast.MakeText(this, e.Error.Message, ToastLength.Short);

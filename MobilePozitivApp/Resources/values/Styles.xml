@@ -31,7 +31,8 @@
 
   </style>
 
-    <style name="TabLayoutThemes" parent="Widget.Design.TabLayout">
+  
+  <style name="TabLayoutThemes" parent="Widget.Design.TabLayout">
       
       <item name="tabIndicatorColor">#FFFFFF</item>
       <item name="tabIndicatorHeight">2dp</item>

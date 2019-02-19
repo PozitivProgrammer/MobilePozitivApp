@@ -29,7 +29,8 @@ namespace MobilePozitivApp
         private Dictionary<string, string> SessionParameters = new Dictionary<string, string>();
         
 #if DEBUG
-        public string WsURL = "http://1c.pozitivtelecom.ru/TestMihail/ws/app.1cws";
+        //public string WsURL = "http://1c.pozitivtelecom.ru/TestDmitry/ws/app.1cws";
+        public string WsURL = "http://1c.pozitivtelecom.ru/SkladPozitiv/ws/app.1cws";
 #endif
 #if !DEBUG
         public string WsURL = "http://1c.pozitivtelecom.ru/SkladPozitiv/ws/app.1cws";

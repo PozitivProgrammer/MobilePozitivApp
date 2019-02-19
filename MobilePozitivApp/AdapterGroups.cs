@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using XamarinShortcutBadger;
+
 using Android.App;
 using Android.Views;
 using Android.Widget;
@@ -111,7 +113,7 @@ namespace MobilePozitivApp
                 }
                 items.Add(new DataGroups() { Name = Name, Description = "", Image = imageId, Ref = Ref, ItemCount = ItemCount });
             }
-            ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(mContext, totalItemCount);
+            ShortcutBadger.ApplyCount(mContext, totalItemCount);
         }
     }
 }

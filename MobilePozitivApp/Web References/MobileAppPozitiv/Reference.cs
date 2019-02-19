@@ -69,7 +69,7 @@ namespace MobilePozitivApp.MobileAppPozitiv {
         
         /// <remarks/>
         public MobileAppPozitiv() {
-            this.Url = "http://1c.pozitivtelecom.ru/TestMihail/ws/app.1cws";
+            this.Url = "http://1c.pozitivtelecom.ru/SkladPozitiv/ws/app.1cws";
             if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
                 this.UseDefaultCredentials = true;
                 this.useDefaultCredentialsSetExplicitly = false;

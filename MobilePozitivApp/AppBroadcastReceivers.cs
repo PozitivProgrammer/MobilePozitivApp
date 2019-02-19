@@ -4,6 +4,8 @@ using Android.App;
 using Android.Content;
 using Android.Util;
 
+using XamarinShortcutBadger;
+
 using Newtonsoft.Json.Linq;
 
 
@@ -70,7 +72,7 @@ namespace MobilePozitivApp
                         itemCount = (int)jItemCount.Value;
                     }
                     Log.Info(typeof(AppReceiverAlarm).Name, "Update task count. {0} - count {1}", DateTime.UtcNow, itemCount);
-                    ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(context, itemCount);
+                    ShortcutBadger.ApplyCount(context, itemCount);
                 }
             }
             else

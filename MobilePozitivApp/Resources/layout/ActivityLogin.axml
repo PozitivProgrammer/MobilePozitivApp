@@ -59,7 +59,7 @@
                     android:layout_marginRight="20dp"
                     android:textColor="#000"
                     android:hint="Пароль" />
-            </android.support.design.widget.TextInputLayout>
+            </android.support.design.widget.TextInputLayout> 
             <android.support.v7.widget.AppCompatCheckBox
                 android:id="@+id/Signinwithapin"
                 android:layout_width="match_parent"
@@ -90,7 +90,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="40dp"
                 android:layout_marginLeft="40dp" />
-        <!--<TextView
+        <TextView
                 android:text=""
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -98,7 +98,7 @@
                 android:scrollHorizontally="true"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
-                android:id="@+id/Status" />-->
+                android:id="@+id/Status" />
         </LinearLayout>
         <android.support.v4.widget.Space
             android:layout_width="match_parent"

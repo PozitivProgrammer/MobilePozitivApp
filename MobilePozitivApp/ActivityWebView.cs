@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.IO;
 using System.Text;
 
@@ -10,6 +10,7 @@ using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Webkit;
+using System.Text.RegularExpressions;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using Android.Graphics;
 using Java.IO;
@@ -29,6 +30,32 @@ namespace MobilePozitivApp
         private string mReportAddr;
 
         private string html;
+
+        private string html_preprocessor(string procStr)
+        {
+            var Matches = Regex.Matches(procStr, "[:\\s]+#[0123456789abcdef]{6}[\\s;\\}\"]", RegexOptions.IgnoreCase);
+            foreach (Match match in Matches)
+            {
+
+                var Matches2 = Regex.Matches(match.Value, "#[0123456789abcdef]{6}", RegexOptions.IgnoreCase);
+                foreach (Match match2 in Matches2)
+                {
+                    var rComponent = int.Parse(match2.Value.Substring(1, 2), System.Globalization.NumberStyles.HexNumber);
+                    var gComponent = int.Parse(match2.Value.Substring(3, 2), System.Globalization.NumberStyles.HexNumber);
+                    var bComponent = int.Parse(match2.Value.Substring(5, 2), System.Globalization.NumberStyles.HexNumber);
+
+                    var totalStr = " rgb(" + rComponent.ToString() + ", " + gComponent.ToString() + ", " + bComponent.ToString() + ") ";
+
+                    procStr = Regex.Replace(procStr, "([:\\s]+)" + match2.Value + "([\\s;\\}\"])", "$1" + totalStr + "$2", RegexOptions.IgnoreCase);
+
+
+                }
+
+
+
+            }
+            return procStr;
+        }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -66,7 +93,11 @@ namespace MobilePozitivApp
                 }
             };
             mWebView.SetWebViewClient(customWebViewClient);
-            mWebView.LoadData(html, "text/html", "UTF-8");
+
+            
+            mWebView.LoadData(html_preprocessor(html), "text/html", "UTF-8");
+
+            
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -116,7 +147,7 @@ namespace MobilePozitivApp
         {
             var sendPictureIntent = new Intent(Intent.ActionSend);
             sendPictureIntent.SetType("text/*");
-            sendPictureIntent.PutExtra(Intent.ExtraSubject, "Îò÷åò \"" + mName + "\"");
+            sendPictureIntent.PutExtra(Intent.ExtraSubject, "ÐžÑ‚Ñ‡ÐµÑ‚ \"" + mName + "\"");
             sendPictureIntent.PutExtra(Intent.ExtraStream, Android.Net.Uri.FromFile(new File(mReportAddr)));
             return sendPictureIntent;
         }

@@ -774,10 +774,10 @@
       <documentation>
         <wsi:Claim xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/" conformsTo="http://ws-i.org/profiles/basic/1.1" />
       </documentation>
-      <soapbind:address location="http://1c.pozitivtelecom.ru/TestMihail/ws/app.1cws" />
+      <soapbind:address location="http://1c.pozitivtelecom.ru/SkladPozitiv/ws/app.1cws" />
     </port>
     <port name="MobileAppPozitivSoap12" binding="tns:MobileAppPozitivSoap12Binding">
-      <soap12bind:address location="http://1c.pozitivtelecom.ru/TestMihail/ws/app.1cws" />
+      <soap12bind:address location="http://1c.pozitivtelecom.ru/SkladPozitiv/ws/app.1cws" />
     </port>
   </service>
 </definitions>
