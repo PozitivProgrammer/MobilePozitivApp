@@ -166,6 +166,10 @@ namespace MobilePozitivApp
         {
             AppVariable.Variable.Login = mLogin.Text;
             AppVariable.Variable.Password = mPass.Text;
+
+
+            
+
             AppVariable.Variable.fireBaseClientID = FirebaseInstanceId.Instance.Token;
 
             mProgressDialog.SetMessage("Вход...");

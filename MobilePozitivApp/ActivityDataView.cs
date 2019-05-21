@@ -14,6 +14,8 @@ using Newtonsoft.Json;
 using ZXing.Mobile;
 
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
+using System.Text.RegularExpressions;
+
 
 namespace MobilePozitivApp
 {
@@ -32,7 +34,8 @@ namespace MobilePozitivApp
         private string mName;
 
         private int mIdDataSelect;
-        private EditText mEditTextDataSelect;
+        private EditText mEditTextDataSelect;        
+        
 
         private bool mSaveButtonVisible = false;
         private bool mDialogLoading = false;
@@ -44,7 +47,17 @@ namespace MobilePozitivApp
         private int mWebViewLeft;
 
         Dictionary<long, ElementData> mElements = new Dictionary<long, ElementData>();
-
+        private long FindElementByKey(string pKey)
+        {
+            foreach (KeyValuePair<long, ElementData> item in mElements)
+            {
+                if (item.Value.Key == pKey)
+                {
+                    return item.Key;
+                }
+            }
+            return -1;
+        }
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -175,6 +188,8 @@ namespace MobilePozitivApp
 
             long Id = (long)((JValue)jElement["Id"]).Value;
             string Name = (string)((JValue)jElement["Name"]).Value;
+            
+
             string Description = (string)((JValue)jElement["Description"]).Value;
 
             TableRow mNewRow = new TableRow(this);
@@ -189,7 +204,19 @@ namespace MobilePozitivApp
             {
                 mTextViewDesc.Text = Description + ":";
                 mTextViewDesc.SetPadding(10, 0, 0, 0);
-            }            
+            }
+
+
+            string Key = "";
+            if (jElement.ContainsKey("Key"))
+            {
+                Key = (string)((JValue)jElement["Key"]).Value;
+                if (Key.Length > 0)
+                {
+                    mTextViewDesc.SetTextColor(new Android.Graphics.Color(0, 0, 200));
+                }
+            }
+
             mNewRow.AddView(mTextViewDesc);
 
             if (jType.Type != JTokenType.Array) //елси это одиночный тип
@@ -458,6 +485,50 @@ namespace MobilePozitivApp
                         mNewRow.AddView(nButtonDataEdit);
                         
                         break;
+                    case "multiselect":
+                        //````в мобильном приложении техники должны указывать не только поставляемое оборудование, но и забираемое оборудование.:0
+                        
+                        string multi_dataType = (string)((JValue)jElement["DataType"]).Value;
+                        string multi_value = "";
+
+                        
+                        var curViewVal = jElement["Value"]["viewVal"];
+                        var curWorkVal = jElement["Value"]["workVal"];
+                        if (curWorkVal != null)
+                        {
+                            multi_value = (string)((JValue)curWorkVal).Value;
+                        }
+
+                                                
+
+                        mElements.Add(Id, new ElementData() { Name = Name, Data = multi_value });
+
+                        EditText multi_textEdit = new EditText(this) { Id = (int)Id };
+                        multi_textEdit.Focusable = false;
+                        if (curViewVal != null)
+                        {
+                            multi_textEdit.Text = (string)((JValue)curViewVal).Value;
+                        }
+                        mNewRow.AddView(multi_textEdit);
+
+                        ImageButton multi_nButtonDataEdit = new ImageButton(this) { Id = 1000 + (int)Id };
+                        multi_nButtonDataEdit.SetImageResource(Resource.Drawable.ic_action_edit);
+                        multi_nButtonDataEdit.Click += (bsender, bargs) =>
+                        {
+                            mIdDataSelect = (int)Id;
+                            Intent intentData = new Intent(this, typeof(ToggleList));
+                            mEditTextDataSelect = multi_textEdit;
+                            intentData.PutExtra("ref", multi_dataType);
+                            intentData.PutExtra("name", Description);
+                            intentData.PutExtra("cursel", mElements[Id].Data);
+
+                            StartActivityForResult(intentData, 1);
+                        };
+                        
+                        mNewRow.AddView(multi_nButtonDataEdit);
+                        
+
+                        break;
                     case "file":
                         string filesValue = (string)((JValue)jValue["Present"]).Value;
                         string filesRef = (string)((JValue)jValue["Ref"]).Value;                        
@@ -633,6 +704,7 @@ namespace MobilePozitivApp
     public class ElementData
     {
         public string Name { get; set; }
+        public string Key { get; set; }
         public dynamic Data { get; set; }
     }
 }
