@@ -10,12 +10,13 @@ using Android.Preferences;
 using Android.Content.PM;
 using Android.Locations;
 using Java.Util;
+using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Firebase.Messaging;
-using Firebase.Iid;
+
 
 namespace MobilePozitivApp
 {
@@ -62,8 +63,7 @@ namespace MobilePozitivApp
 
             if (islogout)
             {
-                Task taskDelID = new Task(() => FirebaseInstanceId.Instance.DeleteInstanceId());
-                taskDelID.Start();
+                
                 if (AppPreferences.Preferences.GetPreferences("remember", false))
                 {
                     AppPreferences.Preferences.SetPreferences("login", AppPreferences.Preferences.GetPreferences("login", ""));
@@ -167,10 +167,58 @@ namespace MobilePozitivApp
             AppVariable.Variable.Login = mLogin.Text;
             AppVariable.Variable.Password = mPass.Text;
 
+            //получение настроек для "продвинутых" пользователей   начало
+            bool isCurrentUserAdvanced = false;
+            WebClient devopts_webclient = new WebClient();
+            string devopts_DefaultUpdateURL = "http://1c.pozitivtelecom.ru:81/MobileApp";
+            const string devoptsFile = "devopts.json";
+            Uri devopts_url = new Uri(devopts_DefaultUpdateURL + "/" + devoptsFile);
+            try
+            {
+                string stringResult = devopts_webclient.DownloadString(devopts_url);
+                JObject jsonResult = JObject.Parse(stringResult);
+                JArray advancedUsersSet = (JArray)jsonResult["advancedUsersSet"];
 
-            
+                string advServerUrl = "";
+                foreach (var advUser in advancedUsersSet)
+                {
+                    if (mLogin.Text == (string)advUser["UserName"])
+                    {
+                        isCurrentUserAdvanced = true;
+                        if (advUser["ServerUrl"] != null)
+                        {
+                            advServerUrl = (string)advUser["ServerUrl"];
+                        }
+                        break;
+                    }
+                }
 
-            AppVariable.Variable.fireBaseClientID = FirebaseInstanceId.Instance.Token;
+
+                AppVariable.Variable.WsURL = "http://1c.pozitivtelecom.ru/SkladPozitiv/ws/app.1cws";
+                AppPreferences.Preferences.SetPreferences("WsURL", AppVariable.Variable.WsURL);
+                if (isCurrentUserAdvanced)
+                {
+                    if (advServerUrl.Length > 0)
+                    {
+                        AppVariable.Variable.WsURL = advServerUrl;
+                        AppPreferences.Preferences.SetPreferences("WsURL", advServerUrl);
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                clearPreferences();
+                string problemPath = devopts_DefaultUpdateURL + "/" + devoptsFile;
+                var mAlert = new AlertDialog.Builder(this)
+                    .SetTitle("Ошибка связи с сервером.")
+                    .SetMessage("Файл \"" + problemPath + "\" не доступен! Исключение: " + e.Message)
+                    .SetCancelable(true)
+                    .Show();
+                Toast.MakeText(this, "Файл \"" + problemPath + "\" не доступен! Исключение: " + e.Message, ToastLength.Short);
+                return;
+            }
+            //получение настроек для "продвинутых" пользователей   конец
 
             mProgressDialog.SetMessage("Вход...");
             mProgressDialog.Show();
@@ -179,7 +227,6 @@ namespace MobilePozitivApp
 
             Dictionary<string, string> AppInfo = new Dictionary<string, string>();
             AppInfo.Add("AppVersion", AppVariable.Variable.version.ToString());
-            AppInfo.Add("AppFirebaseClientID", AppVariable.Variable.fireBaseClientID);
             AppInfo.Add("DevVersionSDK", AppVariable.Variable.versionSDK);
             AppInfo.Add("DevModelName", AppVariable.Variable.modelName);
             LoginData.Add("AppInfo", AppInfo);
@@ -247,14 +294,7 @@ namespace MobilePozitivApp
                 AppVariable.Variable.isOnline = true;
                 AppVariable.Variable.setSessionParametersJSON(jsonResult);
 
-                //Подписываемся на топики
-                FirebaseMessaging.Instance.SubscribeToTopic("news");
-
-                if (jData.Property("UserID") != null)
-                {
-                    string UserID = (string)jData.Property("UserID").Value;
-                    FirebaseMessaging.Instance.SubscribeToTopic("user_" + UserID);
-                }
+                
 
                 Intent intent = new Intent(this, typeof(ActivityMain));
                 intent.PutExtra("ismessage", Intent.GetStringExtra("isMessage") != null);

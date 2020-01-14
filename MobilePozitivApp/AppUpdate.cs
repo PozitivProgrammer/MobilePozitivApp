@@ -26,7 +26,7 @@ namespace MobilePozitivApp
 
         public bool CheckUpdate(int curentVersion)
         {
-            string DefaultUpdateURL = "http://1c.pozitivtelecom.ru/MobileApp";
+            string DefaultUpdateURL = "http://1c.pozitivtelecom.ru:81/MobileApp";
             downloadsPath = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/Download";
             string localPathFileApk = System.IO.Path.Combine(downloadsPath, "app.apk");
             Java.IO.File mFileApk = new Java.IO.File(localPathFileApk);

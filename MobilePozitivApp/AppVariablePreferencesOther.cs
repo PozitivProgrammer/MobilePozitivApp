@@ -24,10 +24,14 @@ namespace MobilePozitivApp
         public string versionName;
         public string versionSDK;
         public string modelName;
-        public string fireBaseClientID;
+        
 
         private Dictionary<string, string> SessionParameters = new Dictionary<string, string>();
-        
+
+
+        public string WsURL { get; set; }
+
+/*----    
 #if DEBUG
         public string WsURL = "http://1c.pozitivtelecom.ru/TestDmitry/ws/app.1cws";
         //public string WsURL = "http://1c.pozitivtelecom.ru/SkladPozitiv/ws/app.1cws";
@@ -35,6 +39,7 @@ namespace MobilePozitivApp
 #if !DEBUG
         public string WsURL = "http://1c.pozitivtelecom.ru/SkladPozitiv/ws/app.1cws";
 #endif
+         */   
         public AppVariable()
         {
 

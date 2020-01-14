@@ -15,10 +15,8 @@ using Android.Support.V7.Widget;
 using Android.Widget;
 
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
-using Firebase.Messaging;
-using Firebase;
 using Android.Util;
-using Firebase.Iid;
+
 
 namespace MobilePozitivApp
 {

@@ -10,9 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Preferences;
-using Firebase;
-using Firebase.Iid;
-using Firebase.Messaging;
+
 
 namespace MobilePozitivApp
 {
