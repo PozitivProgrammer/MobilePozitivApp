@@ -11,6 +11,8 @@ using Android.Support.V7.App;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 
+using AlertDialog = Android.Support.V7.App.AlertDialog;
+
 using ZXing.Mobile;
 
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
@@ -239,9 +241,21 @@ namespace MobilePozitivApp
                             nButton.Text = Description;
                             nButton.Click += (sender, args) =>
                             {
-                                lastButtonName = Name;
-                                lastButtonValue = buttonValue;
-                                SetDataByRef(Name, buttonValue);
+                                AlertDialog.Builder quitDialog = new AlertDialog.Builder(this);
+                                quitDialog.SetTitle("¬ы уверены?");
+                                quitDialog.SetPositiveButton("ƒа", (senderAlert, argss) =>
+                                {
+                                    lastButtonName = Name;
+                                    lastButtonValue = buttonValue;
+                                    SetDataByRef(Name, buttonValue);
+                                });
+                                quitDialog.SetNegativeButton("Ќет", (senderAlert, argss) =>
+                                {
+
+                                });
+                                Dialog dialog = quitDialog.Create();
+                                dialog.Show();
+                                
                             };
                             mLinearLayout.AddView(nButton);
                             
@@ -478,12 +492,40 @@ namespace MobilePozitivApp
                             Intent intentData = new Intent(this, typeof(ActivityDataList));
                             mEditTextDataSelect = nTextDataEdit;
                             intentData.PutExtra("ref", dataType);
+                            intentData.PutExtra("isTreeSelect", false);
                             intentData.PutExtra("name", Description);
                             intentData.PutExtra("selected", true);
                             StartActivityForResult(intentData, 1);
                         };
                         mNewRow.AddView(nButtonDataEdit);
                         
+                        break;
+                    case "treedata":
+                        string treedataValue = (string)((JValue)jValue["Present"]).Value;
+                        string treedataRef = (string)((JValue)jValue["Ref"]).Value;
+                        string treedataType = (string)((JValue)jElement["DataType"]).Value;
+
+                        mElements.Add(Id, new ElementData() { Name = Name, Data = treedataRef });
+
+                        EditText tree_nTextDataEdit = new EditText(this) { Id = (int)Id };
+                        tree_nTextDataEdit.Focusable = false;
+                        tree_nTextDataEdit.Text = treedataValue;
+                        mNewRow.AddView(tree_nTextDataEdit);
+
+                        ImageButton tree_nButtonDataEdit = new ImageButton(this) { Id = 1000 + (int)Id };
+                        tree_nButtonDataEdit.SetImageResource(Resource.Drawable.ic_action_edit);
+                        tree_nButtonDataEdit.Click += (bsender, bargs) => {
+                            mIdDataSelect = (int)Id;
+                            Intent intentData = new Intent(this, typeof(ActivityDataList));
+                            mEditTextDataSelect = tree_nTextDataEdit;
+                            intentData.PutExtra("ref", treedataType);
+                            intentData.PutExtra("isTreeSelect", true);
+                            intentData.PutExtra("name", Description);
+                            intentData.PutExtra("selected", true);
+                            StartActivityForResult(intentData, 1);
+                        };
+                        mNewRow.AddView(tree_nButtonDataEdit);
+
                         break;
                     case "multiselect":
                         //````в мобильном приложении техники должны указывать не только поставл€емое оборудование, но и забираемое оборудование.:0

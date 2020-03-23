@@ -494,7 +494,20 @@ namespace MobilePozitivApp.MobileAppPozitiv {
                         SessionPar});
             return ((string)(results[0]));
         }
-        
+
+
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://1c.pozitivtelecom.ru#MobileAppPozitiv:GetParentList", RequestNamespace = "http://1c.pozitivtelecom.ru", ResponseNamespace = "http://1c.pozitivtelecom.ru", Use = System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle = System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return")]
+        public string GetParentList(string Ref, string ParentRef, [System.Xml.Serialization.XmlElementAttribute(IsNullable = true)] string SessionPar)
+        {
+            object[] results = this.Invoke("GetParentList", new object[] {
+                        Ref,
+                        ParentRef,
+                        SessionPar});
+            return ((string)(results[0]));
+        }
+
         /// <remarks/>
         public void GetListAsync(string Ref, string SessionPar) {
             this.GetListAsync(Ref, SessionPar, null);

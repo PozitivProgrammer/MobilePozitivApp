@@ -2356,46 +2356,49 @@ namespace MobilePozitivApp
 			public const int ic_document_deleted = 2130837653;
 			
 			// aapt resource value: 0x7f020096
-			public const int ic_logout = 2130837654;
+			public const int ic_folder = 2130837654;
 			
 			// aapt resource value: 0x7f020097
-			public const int Icon = 2130837655;
+			public const int ic_logout = 2130837655;
 			
 			// aapt resource value: 0x7f020098
-			public const int Logo = 2130837656;
+			public const int Icon = 2130837656;
 			
 			// aapt resource value: 0x7f020099
-			public const int Main = 2130837657;
+			public const int Logo = 2130837657;
 			
 			// aapt resource value: 0x7f02009a
-			public const int MainIcon = 2130837658;
+			public const int Main = 2130837658;
 			
 			// aapt resource value: 0x7f02009b
-			public const int MainIconStatus = 2130837659;
+			public const int MainIcon = 2130837659;
 			
 			// aapt resource value: 0x7f02009c
-			public const int Messages = 2130837660;
+			public const int MainIconStatus = 2130837660;
 			
 			// aapt resource value: 0x7f02009d
-			public const int navigation_empty_icon = 2130837661;
-			
-			// aapt resource value: 0x7f0200a3
-			public const int notification_template_icon_bg = 2130837667;
+			public const int Messages = 2130837661;
 			
 			// aapt resource value: 0x7f02009e
-			public const int Other = 2130837662;
+			public const int navigation_empty_icon = 2130837662;
+			
+			// aapt resource value: 0x7f0200a4
+			public const int notification_template_icon_bg = 2130837668;
 			
 			// aapt resource value: 0x7f02009f
-			public const int Reports = 2130837663;
+			public const int Other = 2130837663;
 			
 			// aapt resource value: 0x7f0200a0
-			public const int rounded = 2130837664;
+			public const int Reports = 2130837664;
 			
 			// aapt resource value: 0x7f0200a1
-			public const int Splash = 2130837665;
+			public const int rounded = 2130837665;
 			
 			// aapt resource value: 0x7f0200a2
-			public const int Tasks = 2130837666;
+			public const int Splash = 2130837666;
+			
+			// aapt resource value: 0x7f0200a3
+			public const int Tasks = 2130837667;
 			
 			static Drawable()
 			{

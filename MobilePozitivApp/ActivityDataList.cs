@@ -36,6 +36,7 @@ namespace MobilePozitivApp
         private TextView mEemptyList;
 
         private string mRef;
+        private bool mIsTreeSelect;
         private string mName;
         private bool mIsSelectedForm;
         private bool mRead;
@@ -55,6 +56,7 @@ namespace MobilePozitivApp
             SetContentView(Resource.Layout.ActivityDataList);
 
             mRef = Intent.GetStringExtra("ref");
+            mIsTreeSelect = Intent.GetBooleanExtra("isTreeSelect",false);
             mName = Intent.GetStringExtra("name");
             mIsSelectedForm = Intent.GetBooleanExtra("selected", false);
             mRead = Intent.GetBooleanExtra("read", false);
@@ -173,7 +175,21 @@ namespace MobilePozitivApp
         private void MDataList_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             var item = this.mAdapterDataList.GetItemAtPosition(e.Position);
-            if (mIsSelectedForm)
+            if (mIsTreeSelect)
+            {
+                if (item.IsGroup)
+                    UpdateList(item.Ref );
+                else
+                {
+                    Intent intent = new Intent();
+                    intent.PutExtra("ref", item.Ref);
+                    intent.PutExtra("name", item.Name);
+                    SetResult(Result.Ok, intent);
+                    Finish();
+                }
+
+            }
+            else if (mIsSelectedForm)
             {
                 Intent intent = new Intent();                
                 intent.PutExtra("ref", item.Ref);
@@ -263,13 +279,14 @@ namespace MobilePozitivApp
             return base.OnCreateOptionsMenu(menu);
         }
 
-        private void UpdateList()
+        private void UpdateList(string groupRef = "")
         {
             if (AppVariable.Variable.isOnline != true) return;
             Task taskUpdate = new Task(() => {
                 Thread.Sleep(100);
                 RunOnUiThread(() => mSwipeRefreshLayout.Refreshing = true);
-                mAdapterDataList = new AdapterDataList(this, mRef, mSearchEditText.Text);
+
+                mAdapterDataList = new AdapterDataList(this, mRef, groupRef, mSearchEditText.Text);
 
                 RunOnUiThread(() => {
                     mDataList.Adapter = mAdapterDataList;

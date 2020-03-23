@@ -16,12 +16,15 @@ namespace MobilePozitivApp
         public List<DataDataList> items;
         public List<DataDataList> itemsOrig;
         public string mRef;
+        public string mGroupRef;
+        
 
-        public AdapterDataList(Activity Context, string Ref, string searchStr = null) //We need a context to inflate our row view from
+        public AdapterDataList(Activity Context, string Ref, string GroupRef, string PrevParentRef, string searchStr = null) //We need a context to inflate our row view from
           : base()
         {
             mContext = Context;
             mRef = Ref;
+            mGroupRef = GroupRef;
 
             UpdateList();
 
@@ -79,7 +82,14 @@ namespace MobilePozitivApp
 
             try
             {
-                DatalistResult = dataSetWS.GetList(mRef, AppVariable.Variable.getSessionParametersJSON());
+                if (mGroupRef == "")
+                {
+                    DatalistResult = dataSetWS.GetList(mRef, AppVariable.Variable.getSessionParametersJSON());
+                }
+                else
+                {
+                    DatalistResult = dataSetWS.GetParentList(mRef, mGroupRef, AppVariable.Variable.getSessionParametersJSON());
+                }
             }
             catch (Exception e)
             {
@@ -98,6 +108,7 @@ namespace MobilePozitivApp
                 {
                     JValue Name = (JValue)Group["Name"];
                     JValue Ref = (JValue)Group["Ref"];
+                    JValue lIsGroup = (JValue)Group["IsGroup"];
                     JValue Description = (JValue)Group["Description"];
 
                     int imgeID = Resource.Drawable.ic_document;
@@ -115,10 +126,13 @@ namespace MobilePozitivApp
                             case "DocumentAccept":
                                 imgeID = Resource.Drawable.ic_document_accept;
                             break;
+                            case "Folder":
+                                imgeID = Resource.Drawable.ic_folder;
+                            break;
                         }
                     }
 
-                    itemsOrig.Add(new DataDataList() { Name = (string)Name.Value, Description = (string)Description.Value, Image = imgeID, Ref = (string)Ref.Value });
+                    itemsOrig.Add(new DataDataList() { Name = (string)Name.Value, Description = (string)Description.Value, Image = imgeID, Ref = (string)Ref.Value, IsGroup = lIsGroup != null ? (bool)lIsGroup.Value : false });
                 }
                 items = itemsOrig;
             }
